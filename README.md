@@ -1,4 +1,4 @@
-#lichessAutomations
+# lichessAutomations
 
 Uses the lichess api to:
 <ul>
