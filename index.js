@@ -56,4 +56,4 @@ createTournament();
 
 setInterval(checkDate, 1000);
 
-app.listen(3000, function a(){})
+app.listen(process.env.PORT || 5000, function a(){})
