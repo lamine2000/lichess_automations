@@ -5,7 +5,7 @@ let metaData = {
     token: 'lip_dwiOyZuKOOCvrNxq25aT',
     teamId: 'esp-chess-club',
     nextDate: new Date('2021-11-15T16:00:00.000Z'),
-    step: 1 //weekly
+    step: 1 //day
 }
 
 let tournamentInfo = {
