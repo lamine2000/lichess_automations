@@ -3,7 +3,7 @@ const request = require('request');
 let metaData = {
     token: 'lip_jfvgGVXubyUHMlDan86G',
     teamId: 'esp-chess-club',
-    date: new Date('2021-11-15T03:10:00.000Z'),
+    date: new Date('2021-11-15T016:00:00.000Z'),
     step: 1 //weekly
 }
 
@@ -41,7 +41,9 @@ function createTournament(){
 function checkDate(){
     let now = Date.now();
     console.log("verifier pour " + metaData.date);
-    if((now - 3000 < metaData.date && metaData.date < now + 3000) || metaData.date < now){
+
+    //creates the tournament 1h in advance
+    if((now - 3000 < metaData.date - 3600000 && metaData.date - 3600000 < now + 3000) || metaData.date - 3600000 < now){
         createTournament();
     }
 }
