@@ -2,13 +2,20 @@ const request = require('request');
 const express = require('express');
 const app = express();
 
-
 let metaData = {
     //token: 'lip_jfvgGVXubyUHMlDan86G',
     token: 'lip_dwiOyZuKOOCvrNxq25aT',
     teamId: 'esp-chess-club',
-    nextDate: new Date('2021-11-16T16:00:00.000Z'),
+    nextDate: new Date(Date.now()),
     step: 1 //day
+}
+
+metaData.nextDate.setHours(16, 0, 0, 0);
+
+//s'il est 16h passées
+if(Date.now() > metaData.nextDate){
+    //on avance metaData.nextDate de metaData.step jours
+    metaData.nextDate.setDate(metaData.nextDate.getDate() + metaData.step);
 }
 
 let tournamentInfo = {
@@ -39,7 +46,7 @@ function createTournament(){
         if (error) throw new Error(error);
         console.log(response.body);
     });
-    metaData.nextDate = metaData.nextDate.setDate(metaData.nextDate.getDate() + metaData.step); //set it to the next week
+    metaData.nextDate = metaData.nextDate.setDate(metaData.nextDate.getDate() + metaData.step); //set it to the next date
 }
 
 function checkDate(){
@@ -52,8 +59,6 @@ function checkDate(){
     }
 }
 
-createTournament();
-
-setInterval(checkDate, 1000);
-
-app.listen(process.env.PORT || 5000, function a(){})
+app.listen(process.env.PORT || 5000, function run(){
+    setInterval(checkDate, 1000);
+});
