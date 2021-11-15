@@ -1,9 +1,10 @@
 const request = require('request');
 
 let metaData = {
-    token: 'lip_jfvgGVXubyUHMlDan86G',
+    //token: 'lip_jfvgGVXubyUHMlDan86G',
+    token: 'lip_dwiOyZuKOOCvrNxq25aT',
     teamId: 'esp-chess-club',
-    date: new Date('2021-11-15T016:00:00.000Z'),
+    nextDate: new Date('2021-11-15T16:00:00.000Z'),
     step: 1 //weekly
 }
 
@@ -12,7 +13,7 @@ let tournamentInfo = {
     'clock.increment': '0',
     'nbRounds': '7',
     'name': 'ESP Swiss Rapid Tournament',
-    'startsAt': metaData.date,
+    'startsAt': metaData.nextDate,
     'roundInterval': '60',
     'variant': 'standard',
     'description': 'Tournoi hebdomadaire à cadence Rapide.',
@@ -35,15 +36,15 @@ function createTournament(){
         if (error) throw new Error(error);
         console.log(response.body);
     });
-    metaData.date = metaData.date.setDate(metaData.date.getDate() + metaData.step); //set it to the next week
+    metaData.nextDate = metaData.nextDate.setDate(metaData.nextDate.getDate() + metaData.step); //set it to the next week
 }
 
 function checkDate(){
     let now = Date.now();
-    console.log("verifier pour " + metaData.date);
+    console.log("verifier pour " + metaData.nextDate);
 
     //creates the tournament 1h in advance
-    if((now - 3000 < metaData.date - 3600000 && metaData.date - 3600000 < now + 3000) || metaData.date - 3600000 < now){
+    if((now - 3000 < metaData.nextDate - 3600000 && metaData.nextDate - 3600000 < now + 3000) || metaData.nextDate - 3600000 < now){
         createTournament();
     }
 }
