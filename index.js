@@ -1,10 +1,13 @@
 const request = require('request');
+const express = require('express');
+const app = express();
+
 
 let metaData = {
     //token: 'lip_jfvgGVXubyUHMlDan86G',
     token: 'lip_dwiOyZuKOOCvrNxq25aT',
     teamId: 'esp-chess-club',
-    nextDate: new Date('2021-11-15T16:00:00.000Z'),
+    nextDate: new Date('2021-11-16T16:00:00.000Z'),
     step: 1 //day
 }
 
@@ -32,7 +35,7 @@ let options = {
 };
 
 function createTournament(){
-    request(options, function (error, response) {
+    request.post(options, function (error, response) {
         if (error) throw new Error(error);
         console.log(response.body);
     });
@@ -52,3 +55,5 @@ function checkDate(){
 createTournament();
 
 setInterval(checkDate, 1000);
+
+app.listen(80);
