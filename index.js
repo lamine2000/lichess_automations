@@ -10,7 +10,7 @@ let metaData = {
     step: 1 //day
 }
 
-metaData.nextDate.setHours(16, 0, 0, 0);
+metaData.nextDate.setHours(8, 50, 0, 0);
 
 //s'il est 16h passées
 if(Date.now() > metaData.nextDate){
