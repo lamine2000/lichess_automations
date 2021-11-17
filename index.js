@@ -53,8 +53,8 @@ function checkDate(){
     let now = Date.now();
     console.log("verifier pour " + metaData.nextDate);
 
-    //creates the tournament 1h in advance
-    if((now - 3000 < metaData.nextDate - 3600000 && metaData.nextDate - 3600000 < now + 3000) || metaData.nextDate - 3600000 < now){
+    //creates the tournament 5h in advance
+    if((now - 3000 < metaData.nextDate - 18000000 && metaData.nextDate - 18000000 < now + 3000) || metaData.nextDate - 18000000 < now){
         createTournament();
     }
 }
