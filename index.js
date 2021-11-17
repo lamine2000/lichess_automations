@@ -33,7 +33,7 @@ let tournamentInfo = {
 
 //message envoyé aux membres de la team à la création d'un tournoi
 let messagingMembersInfo = {
-    message: `Bonjour, \ncher membre de ESP-Chess-Club \nUn Tournoi à Système Suisse a été créé.\n\nInfos:\n\nDébut: le ${metaData.nextDate.toLocaleDateString()} à ${metaData.nextDate.toLocaleTimeString()},\nCadence: ${tournamentInfo["clock.limit"]/60}+${tournamentInfo["clock.increment"]},\nRondes: ${tournamentInfo.nbRounds},\nIntervalle Inter-Rondes: ${tournamentInfo.roundInterval} secondes, \nClassé: ${tournamentInfo.rated}.\n\nEnvoyé par esp-automation-bot 😉 (https://github.com/lamine2000/lichess_automations) !\n`
+    message: `Bonjour, \nCher membre de ESP-Chess-Club \nUn Tournoi à Système Suisse a été créé.\n\nInfos:\n\nDébut: le ${metaData.nextDate.toLocaleDateString()} à ${metaData.nextDate.toLocaleTimeString()},\nCadence: ${tournamentInfo["clock.limit"]/60}+${tournamentInfo["clock.increment"]},\nRondes: ${tournamentInfo.nbRounds},\nIntervalle Inter-Rondes: ${tournamentInfo.roundInterval} secondes, \nClassé: ${tournamentInfo.rated}.\n\nEnvoyé par esp-automation-bot 😉! \n(https://github.com/lamine2000/lichess_automations)\n`
 };
 
 //header et body de la requete de creation de tournoi
