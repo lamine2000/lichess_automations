@@ -84,7 +84,7 @@ function checkDate(){
     let now = Date.now();
     console.log("verifier pour " + metaData.nextDate.toString());
 
-    //creer le tournoi 5h en avance
+    //creer le tournoi 5h (18 000 000 ms) en avance
     if((now - 3000 < metaData.nextDate - 18000000 && metaData.nextDate - 18000000 < now + 3000) || metaData.nextDate - 18000000 < now){
         createTournament();
         updateNextDate();
