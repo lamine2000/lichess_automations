@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 
 let metaData = {
+    //test
     token: secrets.lichess_token,
     teamId: 'esp-chess-club',
     nextDate: new Date(Date.now()),
