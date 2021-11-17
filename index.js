@@ -93,6 +93,9 @@ function checkDate(){
 }
 
 //ecouter sur le port 5000 en local et une fois déployé, écouter sur le port choisi par le service de deploiement
-app.listen(process.env.PORT || 5000, function run(){
-    setInterval(checkDate, 1000);
-});
+app.listen(
+    process.env.PORT || 5000,
+
+    //Vérifier toutes les secondes si on doit créer un tournoi
+    function run(){setInterval(checkDate, 1000);}
+);
