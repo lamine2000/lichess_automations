@@ -3,13 +3,13 @@ const express = require('express');
 const app = express();
 
 let metaData = {
-    //token: 'lip_jfvgGVXubyUHMlDan86G',
     token: 'lip_dwiOyZuKOOCvrNxq25aT',
     teamId: 'esp-chess-club',
     nextDate: new Date(Date.now()),
-    step: 1 //day
+    step: 1 //jour
 }
 
+//on veut que le tournoi commence à 16h
 metaData.nextDate.setHours(16, 0, 0, 0);
 
 //s'il est 16h passées
@@ -28,10 +28,16 @@ let tournamentInfo = {
     'variant': 'standard',
     'description': 'Tournoi hebdomadaire à cadence Rapide.',
     'rated': 'true',
-    'chatFor': '20' //only team members
+    'chatFor': '20' //membres de l'equipe
 };
 
-let options = {
+//message envoyé aux membres de la team à la création d'un tournoi
+let messagingMembersInfo = {
+    message: `Bonjour, \ncher membre de ESP-Chess-Club \nUn Tournoi à Système Suisse a été créé.\n\nInfos:\n\nDébut: le ${metaData.nextDate.toLocaleDateString()} à ${metaData.nextDate.toLocaleTimeString()},\nCadence: ${tournamentInfo["clock.limit"]/60}+${tournamentInfo["clock.increment"]},\nRondes: ${tournamentInfo.nbRounds},\nIntervalle Inter-Rondes: ${tournamentInfo.roundInterval} secondes, \nClassé: ${tournamentInfo.rated}.\n\nEnvoyé par esp-automation-bot 😉 (https://github.com/lamine2000/lichess_automations) !\n`
+};
+
+//header et body de la requete de creation de tournoi
+let optionsTournamentRequest = {
     'method': 'POST',
     'url': `https://lichess.org/api/swiss/new/${metaData.teamId}`,
     'headers': {
@@ -41,24 +47,52 @@ let options = {
     form: tournamentInfo
 };
 
+//header et body de la requete d'envoi du message à la team
+let optionsMessagingMembersRequest = {
+    'method': 'POST',
+    'url': `https://lichess.org/team/${metaData.teamId}/pm-all`,
+    'headers': {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Bearer ${metaData.token}`
+    },
+    form: messagingMembersInfo
+};
+
+//fonction qui fait la requete de creation du tournoi
 function createTournament(){
-    request.post(options, function (error, response) {
+    request.post(optionsTournamentRequest, function (error, response) {
         if (error) throw new Error(error);
         console.log(response.body);
     });
-    metaData.nextDate = metaData.nextDate.setDate(metaData.nextDate.getDate() + metaData.step); //set it to the next date
 }
 
+//fonction qui fait la requete d'envoi du message à la team
+function sendMessageToMembers(){
+    request.post(optionsMessagingMembersRequest, function (error, response) {
+        if (error) throw new Error(error);
+        console.log(response.body);
+    });
+}
+
+//fonction qui met à jour la date de début du prochain tournoi
+function updateNextDate(){
+    metaData.nextDate = metaData.nextDate.setDate(metaData.nextDate.getDate() + metaData.step);
+}
+
+//fonction qui compare la date de debut du tournoi avec la date actuelle. Elle appelle les autres fonctions lorsqu'un tournoi doit etre créé
 function checkDate(){
     let now = Date.now();
-    console.log("verifier pour " + metaData.nextDate);
+    console.log("verifier pour " + metaData.nextDate.toString());
 
-    //creates the tournament 5h in advance
+    //creer le tournoi 5h en avance
     if((now - 3000 < metaData.nextDate - 18000000 && metaData.nextDate - 18000000 < now + 3000) || metaData.nextDate - 18000000 < now){
         createTournament();
+        updateNextDate();
+        sendMessageToMembers();
     }
 }
 
+//ecouter sur le port 5000 en local et une fois déployé, écouter sur le port choisi par le service de deploiement
 app.listen(process.env.PORT || 5000, function run(){
     setInterval(checkDate, 1000);
 });
