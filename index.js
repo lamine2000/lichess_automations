@@ -96,6 +96,6 @@ function checkDate(){
 app.listen(
     process.env.PORT || 5000,
 
-    //Vérifier toutes les secondes si on doit créer un tournoi
+    //Appeler chackDate() toutes les secondes
     function run(){setInterval(checkDate, 1000);}
 );
