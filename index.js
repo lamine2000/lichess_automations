@@ -62,6 +62,7 @@ let optionsMessagingMembersRequest = {
 function handleErrorResponse(error, reqponse){
     if (error) throw new Error(error);
         console.log(response.body);
+        console.log(erro.message)
 }
 
 //fonction qui fait la requete de creation du tournoi
