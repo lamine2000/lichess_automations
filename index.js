@@ -134,7 +134,7 @@ app.post(
     (req, res) => {
 
         sendPrivateMessage(req.body.text, req.body.dest, req.body.token);
-        res.status(200).send("Message envoyé !");
+        res.status(200).send("Message envoye !");
     }
 )
 
