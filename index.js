@@ -1,6 +1,11 @@
 const request = require('request');
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+
+//middleware
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 let metaData = {
     privateMessageToken: 'lip_VHVBafFH8Mfhf5u8qDsV',
@@ -42,7 +47,7 @@ let optionsTournamentRequest = {
     'method': 'POST',
     'url': `https://lichess.org/api/swiss/new/${metaData.teamId}`,
     'headers': {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded;application/json;charset=utf-8',
         'Authorization': `Bearer ${metaData.tournamentToken}`
     },
     'form': tournamentInfo
@@ -60,9 +65,12 @@ let optionsMessagingMembersRequest = {
 };
 
 function handleErrorResponse(error, response){
-    if (error) throw new Error(error);
-        console.log(response.body);
-        console.log(error)
+    if (error) {
+        console.log('Erreur: ', error);
+        throw new Error(error);
+    }
+    if (response)
+        console.log('Reponse: ', response.body);
 }
 
 //fonction qui fait la requete de creation du tournoi
@@ -75,19 +83,16 @@ function sendMessageToMembers(){
     request.post(optionsMessagingMembersRequest, handleErrorResponse);
 }
 
-function sendPrivateMessage(message, dest){
+function sendPrivateMessage(message, destinataire){
     request.post(
         {
             'method': 'POST',
-            'url': `https://lichess.org/inbox/fatmasenju`,
-            'heasers': {
+            'url': `https://lichess.org/inbox/${destinataire}`,
+            'headers': {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': `Bearer ${metaData.privateMessageToken}`
             },
-            'form': {
-                'text': 'coucouuu',
-                'dest': 'fatmasenju'
-            }
+            'form': {'text': `${message}`}
         },
         handleErrorResponse
     )
@@ -113,7 +118,7 @@ function checkDate(){
 
 app.get(
     '',
-    (req, res) => {
+    (_, res) => {
         res.status(200).send('Hi this app is running ;)');
     }
 );
@@ -121,11 +126,9 @@ app.get(
 app.post(
     '/send',
     (req, res) => {
-        //let msg = req.body.text;
-        //let dest = req.body.dest;
-        //console.log(msg+dest);
 
-        sendPrivateMessage('msg', "dest");
+        sendPrivateMessage(req.body.text, req.body.dest);
+        res.status(200).send("Message envoyé !");
     }
 )
 
@@ -134,5 +137,5 @@ app.listen(
     process.env.PORT || 5000,
 
     //Appeler chackDate() toutes les secondes
-    function run(){setInterval(checkDate, 1000);}
+    () => {setInterval(checkDate, 1000);}
 );
