@@ -3,7 +3,8 @@ const express = require('express');
 const app = express();
 
 let metaData = {
-    token: 'lip_dwiOyZuKOOCvrNxq25aT',
+    privateMessageToken: 'lip_VHVBafFH8Mfhf5u8qDsV',
+    tournamentToken: 'lip_dwiOyZuKOOCvrNxq25aT',
     teamId: 'esp-chess-club',
     nextDate: new Date(Date.now()),
     step: 1 //jour
@@ -42,9 +43,9 @@ let optionsTournamentRequest = {
     'url': `https://lichess.org/api/swiss/new/${metaData.teamId}`,
     'headers': {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Bearer ${metaData.token}`
+        'Authorization': `Bearer ${metaData.tournamentToken}`
     },
-    form: tournamentInfo
+    'form': tournamentInfo
 };
 
 //header et body de la requete d'envoi du message à la team
@@ -53,25 +54,39 @@ let optionsMessagingMembersRequest = {
     'url': `https://lichess.org/team/${metaData.teamId}/pm-all`,
     'headers': {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Bearer ${metaData.token}`
+        'Authorization': `Bearer ${metaData.tournamentToken}`
     },
-    form: messagingMembersInfo
+    'form': messagingMembersInfo
 };
+
+function handleErrorResponse(error, reqponse){
+    if (error) throw new Error(error);
+        console.log(response.body);
+}
 
 //fonction qui fait la requete de creation du tournoi
 function createTournament(){
-    request.post(optionsTournamentRequest, function (error, response) {
-        if (error) throw new Error(error);
-        console.log(response.body);
-    });
+    request.post(optionsTournamentRequest, handleErrorResponse);
 }
 
 //fonction qui fait la requete d'envoi du message à la team
 function sendMessageToMembers(){
-    request.post(optionsMessagingMembersRequest, function (error, response) {
-        if (error) throw new Error(error);
-        console.log(response.body);
-    });
+    request.post(optionsMessagingMembersRequest, handleErrorResponse);
+}
+
+function sendPrivateMessage(message, dest){
+    request.post(
+        {
+            'method': 'POST',
+            'url': `https://lichess.org/inbox/${dest}`,
+            'heasers': {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${metaData.privateMessageToken}`
+            },
+            'form': {'text': `message`}
+        },
+        handleErrorResponse
+    )
 }
 
 //fonction qui met à jour la date de début du prochain tournoi
@@ -93,9 +108,19 @@ function checkDate(){
 }
 
 app.get(
-    '/hi',
+    '',
     (req, res) => {
-        res.status(200).send('hi there !');
+        res.status(200).send('Hi this app is running ;)');
+    }
+);
+
+app.post(
+    '/send',
+    (req, res) => {
+        let msg = req.body.text;
+        let dest = req.body.dest;
+
+        sendPrivateMessage(msg, dest);
     }
 )
 
