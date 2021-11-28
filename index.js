@@ -7,6 +7,13 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+//CORS
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 let metaData = {
     tournamentToken: 'lip_dwiOyZuKOOCvrNxq25aT',
     teamId: 'esp-chess-club',
@@ -89,7 +96,6 @@ function sendPrivateMessage(message, destinataire, sendPrivateMessageToken){
             'url': `https://lichess.org/inbox/${destinataire}`,
             'headers': {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Access-Control-Allow-Origin': '*',
                 'Authorization': `Bearer ${sendPrivateMessageToken}`
             },
             'form': {'text': `${message}`}
