@@ -89,14 +89,15 @@ function sendMessageToMembers(){
     request.post(optionsMessagingMembersRequest, handleErrorResponse);
 }
 
-function sendPrivateMessage(message, destinataire, sendPrivateMessageToken){
+async function sendPrivateMessage(message, destinataire, privateMessageToken){
+    console.log('je repete: ', privateMessageToken);
     request.post(
         {
             'method': 'POST',
             'url': `https://lichess.org/inbox/${destinataire}`,
             'headers': {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': `Bearer ${sendPrivateMessageToken}`
+                'Authorization': `Bearer ${privateMessageToken}`
             },
             'form': {'text': `${message}`}
         },
@@ -132,9 +133,18 @@ app.get(
 app.post(
     '/send',
     (req, res) => {
-
-        sendPrivateMessage(req.body.text, req.body.dest, req.body.token);
-        res.status(200).send("Message envoye !");
+        console.log('le token: ', req.body.token);
+        sendPrivateMessage(req.body.text, req.body.dest, req.body.token)
+            .then(
+                value => {
+                    console.log(value);
+                    res.status(200).send("Message envoye !");
+                    },
+                reason => {
+                    console.log(reason);
+                    throw Error(reason);
+                }
+            );
     }
 )
 
