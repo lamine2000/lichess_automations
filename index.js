@@ -133,18 +133,17 @@ app.get(
 app.post(
     '/send',
     (req, res) => {
-        console.log('le token: ', req.body.token);
-        console.log('le dest: ', req.body.dest);
-        console.log('le msg: ', req.body.text);
+
         sendPrivateMessage(req.body.text, req.body.dest, req.body.token)
             .then(
                 value => {
                     console.log(value);
-                    res.status(200).send("Message envoye !");
+                    res.status(200).send("Message envoyé !");
                     },
                 reason => {
                     console.log(reason);
-                    res.status(400).send("Échec d'envoi du message")
+                    res.status(400).send("Échec d'envoi du message");
+                    throw Error(reason);
                 }
             );
     }
