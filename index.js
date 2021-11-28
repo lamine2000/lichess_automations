@@ -89,6 +89,7 @@ function sendPrivateMessage(message, destinataire, sendPrivateMessageToken){
             'url': `https://lichess.org/inbox/${destinataire}`,
             'headers': {
                 'Content-Type': 'application/x-www-form-urlencoded',
+                'Access-Control-Allow-Origin': '*',
                 'Authorization': `Bearer ${sendPrivateMessageToken}`
             },
             'form': {'text': `${message}`}
