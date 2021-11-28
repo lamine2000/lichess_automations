@@ -119,6 +119,7 @@ app.post(
     (req, res) => {
         let msg = req.body.text;
         let dest = req.body.dest;
+        console.log(msg+dest);
 
         sendPrivateMessage(msg, dest);
     }
