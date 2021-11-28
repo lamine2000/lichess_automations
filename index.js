@@ -79,12 +79,12 @@ function sendPrivateMessage(message, dest){
     request.post(
         {
             'method': 'POST',
-            'url': `https://lichess.org/inbox/${dest}`,
+            'url': `https://lichess.org/inbox/fatmasenju`,
             'heasers': {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': `Bearer ${metaData.privateMessageToken}`
             },
-            'form': {'text': `message`}
+            'form': {'text': 'coucouuu'}
         },
         handleErrorResponse
     )
