@@ -92,6 +92,13 @@ function checkDate(){
     }
 }
 
+app.get(
+    '/hi',
+    (req, res) => {
+        res.status(200).send('hi there !');
+    }
+)
+
 //ecouter sur le port 5000 en local et une fois déployé, écouter sur le port choisi par le service de deploiement
 app.listen(
     process.env.PORT || 5000,
