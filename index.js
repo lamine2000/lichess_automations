@@ -59,10 +59,10 @@ let optionsMessagingMembersRequest = {
     'form': messagingMembersInfo
 };
 
-function handleErrorResponse(error, reqponse){
+function handleErrorResponse(error, response){
     if (error) throw new Error(error);
         console.log(response.body);
-        console.log(erro.message)
+        console.log(error)
 }
 
 //fonction qui fait la requete de creation du tournoi
@@ -84,7 +84,10 @@ function sendPrivateMessage(message, dest){
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': `Bearer ${metaData.privateMessageToken}`
             },
-            'form': {'text': 'coucouuu'}
+            'form': {
+                'text': 'coucouuu',
+                'dest': 'fatmasenju'
+            }
         },
         handleErrorResponse
     )
@@ -118,11 +121,11 @@ app.get(
 app.post(
     '/send',
     (req, res) => {
-        let msg = req.body.text;
-        let dest = req.body.dest;
-        console.log(msg+dest);
+        //let msg = req.body.text;
+        //let dest = req.body.dest;
+        //console.log(msg+dest);
 
-        sendPrivateMessage(msg, dest);
+        sendPrivateMessage('msg', "dest");
     }
 )
 
