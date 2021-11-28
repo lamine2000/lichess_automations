@@ -8,7 +8,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 let metaData = {
-    privateMessageToken: 'lip_VHVBafFH8Mfhf5u8qDsV',
     tournamentToken: 'lip_dwiOyZuKOOCvrNxq25aT',
     teamId: 'esp-chess-club',
     nextDate: new Date(Date.now()),
@@ -83,14 +82,14 @@ function sendMessageToMembers(){
     request.post(optionsMessagingMembersRequest, handleErrorResponse);
 }
 
-function sendPrivateMessage(message, destinataire){
+function sendPrivateMessage(message, destinataire, sendPrivateMessageToken){
     request.post(
         {
             'method': 'POST',
             'url': `https://lichess.org/inbox/${destinataire}`,
             'headers': {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': `Bearer ${metaData.privateMessageToken}`
+                'Authorization': `Bearer ${sendPrivateMessageToken}`
             },
             'form': {'text': `${message}`}
         },
@@ -127,7 +126,7 @@ app.post(
     '/send',
     (req, res) => {
 
-        sendPrivateMessage(req.body.text, req.body.dest);
+        sendPrivateMessage(req.body.text, req.body.dest, req.body.token);
         res.status(200).send("Message envoyé !");
     }
 )
