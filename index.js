@@ -133,7 +133,6 @@ app.get(
 app.post(
     '/send',
     (req, res) => {
-
         sendPrivateMessage(req.body.text, req.body.dest, req.body.token)
             .then(
                 value => {
